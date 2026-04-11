@@ -1,0 +1,22 @@
+{
+  "name": "ask-ai-server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env --experimental-strip-types src/index.ts",
+    "dev": "node --env-file=.env --experimental-strip-types --watch src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "2.0.34",
+    "@ai-sdk/openai": "3.0.52",
+    "ai": "6.0.154",
+    "graphql": "16.13.2",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.13",
+    "typescript": "6.0.2"
+  }
+}
