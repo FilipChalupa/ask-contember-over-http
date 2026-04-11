@@ -15,7 +15,6 @@ const env = z
 		AI_API_KEY: z.string().min(1),
 		AI_MODEL: z.string().optional(),
 		PORT: z.coerce.number().default(3000),
-		SESSIONS_DIR: z.string().default('./sessions'),
 	})
 	.parse(process.env)
 

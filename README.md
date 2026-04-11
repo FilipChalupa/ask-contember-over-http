@@ -19,19 +19,18 @@ cp .env.sample .env
 | `AI_API_KEY` | Yes | API key for the AI provider | `AIza...` |
 | `AI_MODEL` | No | Model override (default: `gemini-2.5-flash` for Google, `gpt-4o-mini` for OpenAI) | `gemini-2.5-pro` |
 | `PORT` | No | Server port (default: `3000`) | `3000` |
-| `SESSIONS_DIR` | No | Directory for conversation history (default: `./sessions`) | `/data/sessions` |
 
 ## Run
 
 ```bash
-npm run dev
+docker compose up -d --build
 ```
 
-Or with Docker:
+Or without Docker:
 
 ```bash
-docker build -t ask-ai-server .
-docker run --rm --env-file .env -p 3000:3000 -v ask-ai-sessions:/data/sessions ask-ai-server
+npm install
+npm run dev
 ```
 
 ## API
@@ -88,7 +87,7 @@ curl -X POST http://localhost:3000 \
   -d '{"question": "And what category is it in?"}'
 ```
 
-Sessions are stored as JSON files in `SESSIONS_DIR`. Without the header, each request is stateless.
+Session history persists in a Docker volume. Without the header, each request is stateless.
 
 ## How it works
 

@@ -1,0 +1,11 @@
+services:
+  ask-ai-server:
+    build: .
+    env_file: .env
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - sessions:/data/sessions
+
+volumes:
+  sessions:
