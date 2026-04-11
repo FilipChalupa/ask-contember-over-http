@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { createExecuteGraphQLTool } from './executeGraphQL.js'
 import { formatCondensedSchema, introspectAndCondense } from './introspect.js'
 import { createModel } from './models.js'
+import { loadSession, saveSession } from './sessions.js'
 import { buildSystemPrompt } from './systemPrompt.js'
 
 const env = z
@@ -14,6 +15,7 @@ const env = z
 		AI_API_KEY: z.string().min(1),
 		AI_MODEL: z.string().optional(),
 		PORT: z.coerce.number().default(3000),
+		SESSIONS_DIR: z.string().default('./sessions'),
 	})
 	.parse(process.env)
 
@@ -92,16 +94,31 @@ const server = createServer(async (req, res) => {
 				return json(res, { error: 'Missing "question" field' }, 400)
 			}
 
+			const sessionId =
+				typeof req.headers['x-session-id'] === 'string'
+					? req.headers['x-session-id']
+					: undefined
+
 			// biome-ignore lint/suspicious/noConsole: standalone server logging
-			console.log(`Question: ${question}`)
+			console.log(`Question${sessionId ? ` [${sessionId}]` : ''}: ${question}`)
+
+			const history = sessionId ? await loadSession(sessionId) : []
 
 			const result = await generateText({
 				model,
 				system: systemPrompt,
-				prompt: question,
+				messages: [...history, { role: 'user', content: question }],
 				tools: { executeGraphQL: executeGraphQLTool },
 				stopWhen: stepCountIs(5),
 			})
+
+			if (sessionId) {
+				await saveSession(sessionId, [
+					...history,
+					{ role: 'user', content: question },
+					...result.response.messages,
+				])
+			}
 
 			// biome-ignore lint/suspicious/noConsole: standalone server logging
 			console.log(

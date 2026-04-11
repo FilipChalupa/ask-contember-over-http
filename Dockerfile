@@ -12,5 +12,8 @@ COPY src ./src
 
 EXPOSE 3000
 ENV PORT=3000
+ENV SESSIONS_DIR=/data/sessions
+
+VOLUME /data/sessions
 
 CMD ["node", "--experimental-strip-types", "src/index.ts"]
