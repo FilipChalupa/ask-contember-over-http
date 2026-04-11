@@ -85,12 +85,10 @@ const server = createServer(async (req, res) => {
 
 	if (req.method === 'POST' && url.pathname === '/') {
 		try {
-			const rawBody = await readBody(req)
-			const body = JSON.parse(rawBody) as { question?: string }
-			const question = body.question
+			const question = (await readBody(req)).trim()
 
-			if (!question || typeof question !== 'string') {
-				return json(res, { error: 'Missing "question" field' }, 400)
+			if (!question) {
+				return json(res, { error: 'Empty question' }, 400)
 			}
 
 			const sessionId =
