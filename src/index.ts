@@ -1,11 +1,11 @@
 import { createServer } from 'node:http'
 import { generateText, stepCountIs } from 'ai'
 import { z } from 'zod'
-import { createExecuteGraphQLTool } from './executeGraphQL.js'
-import { formatCondensedSchema, introspectAndCondense } from './introspect.js'
-import { createModel } from './models.js'
-import { loadSession, saveSession } from './sessions.js'
-import { buildSystemPrompt } from './systemPrompt.js'
+import { createExecuteGraphQLTool } from './executeGraphQL.ts'
+import { formatCondensedSchema, introspectAndCondense } from './introspect.ts'
+import { createModel } from './models.ts'
+import { loadSession, saveSession } from './sessions.ts'
+import { buildSystemPrompt } from './systemPrompt.ts'
 
 const env = z
 	.object({

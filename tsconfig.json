@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
     "allowJs": true,
-    "rewriteRelativeImportExtensions": true
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*"]
 }
