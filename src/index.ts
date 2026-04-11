@@ -122,7 +122,8 @@ const server = createServer(async (req, res) => {
 				`Answer (${result.steps.length} steps): ${result.text.slice(0, 100)}...`,
 			)
 
-			return json(res, { answer: result.text })
+			res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' })
+			return res.end(result.text)
 		} catch (error) {
 			console.error('Error processing question:', error)
 			return json(
