@@ -8,6 +8,7 @@ services:
       - "${PORT:-3000}:3000"
     volumes:
       - sessions:/data/sessions
+    restart: unless-stopped
 
 volumes:
   sessions:
